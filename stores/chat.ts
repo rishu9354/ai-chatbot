@@ -19,7 +19,7 @@ function addMessage(msg:{role:string; content:string}){
     messages.push(msg);
     console.log(msg);
     
-    getAnswers(msg);
+    // getAnswers(msg);
 }
 
 async function getAnswers(msg:{role:string; content:string}){

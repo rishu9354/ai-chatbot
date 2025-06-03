@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-4 w-full relative">
+    <div class="flex flex-col gap-4 w-full relative overflow-y-auto px-4" ref="chatContainer" :style="{height:`${chatHieght}px`}">
         <!-- bg welcome txt msg -->
         <div
             class="absolute top-4 left-4 text-gray-500 dark:text-gray-600 text-2xl text-center italic pointer-events-none select-none z-0">
@@ -18,18 +18,23 @@
                 </template>
             </div>
         </div>
+
+        
     </div>
 </template>
 
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useChatStore } from '~/stores/chat'
+import { useViewport } from '~/composables/useViewport';
+
 const typedMessage = ref('');
 
 const chat = useChatStore();
 const { messages } = storeToRefs(chat);
 const { finalContent } = storeToRefs(chat)
-
+const chatContainer = ref(null);
+const chatHieght = ref(0)
 // Watch for new assistant message
 watch(
   () => messages.value.length,
@@ -55,4 +60,23 @@ function typeWriter(text) {
   }, speed)
 }
 
+
+const scrollToBottom = ()=>{
+  nextTick(()=>{
+    if(chatContainer.value){
+      chatContainer.value.scrollTop = chatContainer.value.scrollHeight
+    }
+  })
+}
+// Scroll whenever messages change
+watch(messages, () => {
+  scrollToBottom();
+});
+onMounted(()=>{
+  const headerqheight =  70;
+  const innputHeight = 80;
+
+  chatHieght.value= window.innerHeight - headerqheight - innputHeight
+  scrollToBottom();
+})
 </script>

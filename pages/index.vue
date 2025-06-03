@@ -1,6 +1,6 @@
 <template>
-<div class="flex flex-col h-100 bg-black text-white rounded-xl">
-  <div class="flex-1 p-4 overflow-y-auto">
+<div class="flex flex-col bg-black text-white rounded-xl" :style="{ height: `${height - 160}px` }">
+  <div class="flex-1 p-4 overflow-y-auto" >
 
     <ChatWindow />
   </div>
@@ -10,3 +10,8 @@
 </div>
 
 </template>
+
+<script setup>
+import { useViewport } from '~/composables/useViewport';
+const { height } = useViewport();
+</script>
